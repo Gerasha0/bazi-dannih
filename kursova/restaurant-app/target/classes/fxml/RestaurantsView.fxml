@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<SplitPane dividerPositions="0.65" xmlns:fx="http://javafx.com/fxml"
+           fx:controller="com.restaurant.ui.RestaurantsController">
+
+    <!-- ===== Ліва частина: таблиця + пошук ===== -->
+    <VBox spacing="0">
+
+        <HBox styleClass="filter-bar" spacing="8" alignment="CENTER_LEFT">
+            <Label text="Пошук" styleClass="field-label"/>
+            <TextField fx:id="searchField" promptText="Назва ресторану…" prefWidth="220"
+                       onAction="#handleSearch" HBox.hgrow="ALWAYS"/>
+            <Button text="🔍 Знайти"  styleClass="btn-primary"  onAction="#handleSearch"/>
+            <Button text="↺ Оновити" styleClass="btn-refresh" onAction="#handleRefresh"/>
+        </HBox>
+
+        <TableView fx:id="tableView" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="colId"      text="ID"            prefWidth="50"/>
+                <TableColumn fx:id="colName"    text="Назва"         prefWidth="180"/>
+                <TableColumn fx:id="colAddress" text="Адреса"        prefWidth="220"/>
+                <TableColumn fx:id="colPhone"   text="Телефон"       prefWidth="130"/>
+                <TableColumn fx:id="colHours"   text="Години роботи" prefWidth="140"/>
+            </columns>
+        </TableView>
+
+        <HBox styleClass="action-bar" spacing="8">
+            <Button text="➕ Додати"   styleClass="btn-success" onAction="#handleAdd"/>
+            <Button text="🗑 Видалити" styleClass="btn-danger"  onAction="#handleDelete"/>
+        </HBox>
+    </VBox>
+
+    <!-- ===== Права частина: форма редагування ===== -->
+    <ScrollPane fitToWidth="true" styleClass="scroll-pane">
+        <VBox spacing="10" styleClass="form-panel">
+            <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+
+            <Label text="Деталі закладу" styleClass="section-title"/>
+
+            <Label text="Назва *" styleClass="field-label"/>
+            <TextField fx:id="fldName" promptText="Назва закладу"/>
+
+            <Label text="Адреса *" styleClass="field-label"/>
+            <TextField fx:id="fldAddress" promptText="Вулиця, місто"/>
+
+            <Label text="Телефон" styleClass="field-label"/>
+            <TextField fx:id="fldPhone" promptText="+380XXXXXXXXX"/>
+
+            <Label text="Email" styleClass="field-label"/>
+            <TextField fx:id="fldEmail" promptText="email@example.com"/>
+
+            <HBox spacing="12">
+                <VBox spacing="4" HBox.hgrow="ALWAYS">
+                    <Label text="Відкриття" styleClass="field-label"/>
+                    <TextField fx:id="fldOpen" promptText="09:00"/>
+                </VBox>
+                <VBox spacing="4" HBox.hgrow="ALWAYS">
+                    <Label text="Закриття" styleClass="field-label"/>
+                    <TextField fx:id="fldClose" promptText="22:00"/>
+                </VBox>
+            </HBox>
+
+            <HBox spacing="10">
+                <Button text="💾 Зберегти"  styleClass="btn-primary"   onAction="#handleSave"   prefWidth="120"/>
+                <Button text="✖ Скасувати" styleClass="btn-secondary" onAction="#handleCancel" prefWidth="100"/>
+            </HBox>
+
+            <Label fx:id="errorLabel" styleClass="error-label"/>
+
+            <Separator/>
+            <Label text="Столики цього закладу" styleClass="section-title"/>
+            <TableView fx:id="tablesView" prefHeight="150">
+                <columns>
+                    <TableColumn fx:id="tColNum" text="Стіл №" prefWidth="80"/>
+                    <TableColumn fx:id="tColCap" text="Місць"  prefWidth="80"/>
+                </columns>
+            </TableView>
+            <HBox spacing="8">
+                <Button text="➕ Столик"    styleClass="btn-success" onAction="#handleAddTable"/>
+                <Button text="🗑 Видалити" styleClass="btn-danger"  onAction="#handleDeleteTable"/>
+            </HBox>
+        </VBox>
+    </ScrollPane>
+</SplitPane>

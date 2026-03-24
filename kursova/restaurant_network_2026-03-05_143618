@@ -1,0 +1,401 @@
+-- MySQL dump 10.13  Distrib 8.4.8, for Linux (x86_64)
+--
+-- Host: 127.0.0.1    Database: restaurant_network
+-- ------------------------------------------------------
+-- Server version	8.4.8-0ubuntu0.25.10.1
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `categories`
+--
+
+DROP TABLE IF EXISTS `categories`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `categories` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(80) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` text COLLATE utf8mb4_unicode_ci,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `categories`
+--
+
+/*!40000 ALTER TABLE `categories` DISABLE KEYS */;
+INSERT INTO `categories` VALUES (1,'Супи','Гарячі та холодні перші страви'),(2,'Основні страви','М\'ясні, рибні та вегетаріанські другі страви'),(3,'Салати','Холодні закуски та салати'),(4,'Десерти','Солодкі страви, торти, морозиво'),(5,'Напої','Холодні та гарячі напої'),(6,'Піца','Класична та авторська піца'),(7,'Паста','Страви з макаронних виробів'),(8,'Закуски','Легкі закуски та снеки');
+/*!40000 ALTER TABLE `categories` ENABLE KEYS */;
+
+--
+-- Table structure for table `customers`
+--
+
+DROP TABLE IF EXISTS `customers`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `customers` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `first_name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `last_name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `phone` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `loyalty_points` int NOT NULL DEFAULT '0',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `phone` (`phone`),
+  UNIQUE KEY `email` (`email`),
+  KEY `idx_customers_phone` (`phone`),
+  KEY `idx_customers_email` (`email`),
+  CONSTRAINT `chk_loyalty_non_negative` CHECK ((`loyalty_points` >= 0))
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `customers`
+--
+
+/*!40000 ALTER TABLE `customers` DISABLE KEYS */;
+INSERT INTO `customers` VALUES (1,'Олексій','Гавриленко','+380991234567','o.gavrylenko@gmail.com',350,'2026-03-04 12:46:22'),(2,'Тетяна','Сорокіна','+380992345678','t.sorokina@ukr.net',120,'2026-03-04 12:46:22'),(3,'Іван','Дяченко','+380993456789','ivan.dyachenko@gmail.com',780,'2026-03-04 12:46:22'),(4,'Марина','Філіпенко','+380994567890',NULL,50,'2026-03-04 12:46:22'),(5,'Ростислав','Юрченко','+380995678901','r.yurchenko@gmail.com',200,'2026-03-04 12:46:22'),(6,'Аліна','Черненко','+380996789012','a.chernenko@ukr.net',494,'2026-03-04 12:46:22'),(7,'Денис','Волощенко','+380997890123',NULL,0,'2026-03-04 12:46:22'),(8,'Зоя','Рибаченко','+380998901234','z.rybachenko@gmail.com',630,'2026-03-04 12:46:22'),(9,'Михайло','Данченко','+380999012345',NULL,95,'2026-03-04 12:46:22'),(10,'Оксана','Стеценко','+380990123456','o.stetsenko@ukr.net',260,'2026-03-04 12:46:22'),(11,'Валерчик','Валерий','+380676700000','valera@mail.com',0,'2026-03-04 14:10:33'),(12,'Вася','Петрович','+380939333393','petrov.vasya@gmail.com',0,'2026-03-05 11:35:33'),(13,'Вася','Дуров','+380505055050','durov.vasya@gmail.com',0,'2026-03-05 11:36:04'),(14,'Марина','Остапова','+380936066060','ostapovamarina@mail.com',0,'2026-03-05 11:37:21');
+/*!40000 ALTER TABLE `customers` ENABLE KEYS */;
+
+--
+-- Table structure for table `employees`
+--
+
+DROP TABLE IF EXISTS `employees`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `employees` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `first_name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `last_name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `position_id` int NOT NULL,
+  `restaurant_id` int NOT NULL,
+  `phone` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `hire_date` date NOT NULL,
+  `salary` decimal(10,2) NOT NULL,
+  `is_active` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`),
+  KEY `idx_employees_restaurant` (`restaurant_id`),
+  KEY `idx_employees_position` (`position_id`),
+  KEY `idx_employees_active` (`is_active`),
+  CONSTRAINT `fk_emp_position` FOREIGN KEY (`position_id`) REFERENCES `positions` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `fk_emp_restaurant` FOREIGN KEY (`restaurant_id`) REFERENCES `restaurants` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `chk_salary_positive` CHECK ((`salary` > 0))
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `employees`
+--
+
+/*!40000 ALTER TABLE `employees` DISABLE KEYS */;
+INSERT INTO `employees` VALUES (1,'Олег','Петренко',1,1,'+380501112233','o.petrenko@smachna.ua','2020-03-15',42000.00,1),(2,'Марія','Кравченко',2,1,'+380502223344','m.kravchenko@smachna.ua','2019-07-01',38000.00,1),(3,'Андрій','Шевченко',3,1,'+380503334455',NULL,'2021-01-10',26000.00,1),(4,'Наталія','Бондар',4,1,'+380504445566',NULL,'2022-05-20',20000.00,1),(5,'Ірина','Мороз',4,1,'+380505556677',NULL,'2022-06-01',20000.00,1),(6,'Дмитро','Лисенко',1,2,'+380506667788','d.lysenko@borsch.ua','2018-09-12',44000.00,1),(7,'Оксана','Гончаренко',2,2,'+380507778899','o.goncharenko@borsch.ua','2019-04-03',39000.00,1),(8,'Василь','Іваненко',3,2,'+380508889900',NULL,'2020-11-15',27000.00,1),(9,'Тетяна','Романенко',4,2,'+380509990011',NULL,'2023-02-14',21000.00,1),(10,'Юрій','Коваленко',7,2,'+380501010101',NULL,'2021-08-25',24000.00,1),(11,'Сергій','Нікітенко',1,3,'+380502020202','s.nikitenko@puzata.ua','2017-12-01',40000.00,1),(12,'Людмила','Павленко',2,3,'+380503030303','l.pavlenko@puzata.ua','2018-03-20',36000.00,1),(13,'Микола','Тимченко',3,3,'+380504040404',NULL,'2022-07-11',25000.00,1),(14,'Катерина','Власенко',4,3,'+380505050505',NULL,'2023-01-09',20000.00,1),(15,'Роман','Савченко',4,3,'+380506060606',NULL,'2023-03-18',20000.00,1),(16,'Ганна','Мельниченко',1,4,'+380507070707','g.mel@croissants.ua','2019-10-07',38000.00,1),(17,'Олена','Яременко',2,4,'+380508080808',NULL,'2020-02-14',34000.00,1),(18,'Богдан','Олійник',3,4,'+380509090909',NULL,'2021-09-30',24000.00,1),(19,'Юлія','Поліщук',4,4,'+380510101010',NULL,'2022-11-22',19000.00,1),(20,'Артем','Ткаченко',1,5,'+380511111111','a.tkachenko@dvorik.ua','2016-05-15',43000.00,1),(21,'Вікторія','Сидоренко',2,5,'+380512121212',NULL,'2017-09-01',37000.00,1),(22,'Максим','Кириленко',3,5,'+380513131313',NULL,'2021-04-19',26000.00,1),(23,'Алла','Захаренко',4,5,'+380514141414',NULL,'2023-05-06',20000.00,1),(24,'Павло','Остапенко',5,5,'+380515151515',NULL,'2022-08-14',28000.00,1),(25,'Христина','Терещенко',1,6,'+380516161616','kh.t@greengarden.ua','2020-06-01',39000.00,1),(26,'Євген','Федоренко',2,6,'+380517171717',NULL,'2021-01-25',35000.00,1),(27,'Ліна','Голубченко',3,6,'+380518181818',NULL,'2022-03-15',24000.00,1),(28,'Степан','Луценко',4,6,'+380519191919',NULL,'2023-07-10',19000.00,1),(29,'Дарина','Вишняк',6,6,'+380520202020',NULL,'2022-12-01',22000.00,1),(30,'Валера','Валерчик',4,7,NULL,NULL,'2026-02-27',1999.00,1);
+/*!40000 ALTER TABLE `employees` ENABLE KEYS */;
+
+--
+-- Table structure for table `ingredients`
+--
+
+DROP TABLE IF EXISTS `ingredients`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `ingredients` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `unit` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'од. вимірювання: г, кг, мл, л, шт',
+  `cost_per_unit` decimal(10,4) NOT NULL DEFAULT '0.0000',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`),
+  CONSTRAINT `chk_cost_non_negative` CHECK ((`cost_per_unit` >= 0))
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ingredients`
+--
+
+/*!40000 ALTER TABLE `ingredients` DISABLE KEYS */;
+INSERT INTO `ingredients` VALUES (1,'Буряк','кг',35.0000),(2,'Капуста','кг',18.0000),(3,'Картопля','кг',22.0000),(4,'Морква','кг',20.0000),(5,'Цибуля ріпчаста','кг',25.0000),(6,'Томати свіжі','кг',65.0000),(7,'Сметана','кг',95.0000),(8,'Яловичина','кг',280.0000),(9,'Свинина','кг',235.0000),(10,'Курятина','кг',185.0000),(11,'Лосось','кг',520.0000),(12,'Вершкове масло','кг',320.0000),(13,'Борошно пшеничне','кг',42.0000),(14,'Яйця','шт',8.5000),(15,'Сіль','кг',7.0000),(16,'Чорний перець','кг',750.0000),(17,'Олія оливкова','л',280.0000),(18,'Часник','кг',90.0000),(19,'Зелень (петрушка)','кг',120.0000),(20,'Моцарела','кг',420.0000),(21,'Пармезан','кг',680.0000),(22,'Томатна паста','кг',75.0000),(23,'Вершки 35%','л',190.0000),(24,'Бекон','кг',340.0000),(25,'Макарони (спагеті)','кг',95.0000),(26,'Тісто дріжджове','кг',55.0000),(27,'Кава зернова','кг',850.0000),(28,'Цукор','кг',55.0000),(29,'Молоко','л',45.0000),(30,'Огірок свіжий','кг',55.0000);
+/*!40000 ALTER TABLE `ingredients` ENABLE KEYS */;
+
+--
+-- Table structure for table `menu_item_ingredients`
+--
+
+DROP TABLE IF EXISTS `menu_item_ingredients`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `menu_item_ingredients` (
+  `menu_item_id` int NOT NULL,
+  `ingredient_id` int NOT NULL,
+  `quantity` decimal(10,3) NOT NULL,
+  PRIMARY KEY (`menu_item_id`,`ingredient_id`),
+  KEY `fk_mii_ingredient` (`ingredient_id`),
+  CONSTRAINT `fk_mii_ingredient` FOREIGN KEY (`ingredient_id`) REFERENCES `ingredients` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `fk_mii_item` FOREIGN KEY (`menu_item_id`) REFERENCES `menu_items` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `chk_qty_positive` CHECK ((`quantity` > 0))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `menu_item_ingredients`
+--
+
+/*!40000 ALTER TABLE `menu_item_ingredients` DISABLE KEYS */;
+INSERT INTO `menu_item_ingredients` VALUES (1,1,300.000),(1,2,200.000),(1,3,150.000),(1,4,80.000),(1,5,60.000),(1,7,50.000),(1,22,30.000),(2,3,100.000),(2,4,50.000),(2,10,200.000),(2,13,100.000),(2,14,1.000),(6,10,220.000),(6,12,50.000),(6,13,100.000),(6,14,1.000),(26,19,10.000),(26,20,150.000),(26,22,80.000),(26,26,300.000),(29,14,2.000),(29,21,40.000),(29,23,50.000),(29,24,80.000),(29,25,180.000);
+/*!40000 ALTER TABLE `menu_item_ingredients` ENABLE KEYS */;
+
+--
+-- Table structure for table `menu_items`
+--
+
+DROP TABLE IF EXISTS `menu_items`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `menu_items` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` text COLLATE utf8mb4_unicode_ci,
+  `price` decimal(10,2) NOT NULL,
+  `category_id` int NOT NULL,
+  `is_available` tinyint(1) NOT NULL DEFAULT '1',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_menu_items_category` (`category_id`),
+  KEY `idx_menu_items_available` (`is_available`),
+  CONSTRAINT `fk_mi_category` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `chk_price_positive` CHECK ((`price` > 0))
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `menu_items`
+--
+
+/*!40000 ALTER TABLE `menu_items` DISABLE KEYS */;
+INSERT INTO `menu_items` VALUES (1,'Борщ','Класичний український борщ з пампушками та сметаною',85.00,1,1,'2026-03-04 12:46:22'),(2,'Куряча локшина','Домашній курячий бульйон з яєчною локшиною',70.00,1,1,'2026-03-04 12:46:22'),(3,'Грибний крем-суп','Крем-суп з печерицями та вершками',90.00,1,1,'2026-03-04 12:46:22'),(4,'Юшка рибна','Рибний суп з сьомгою та зеленню',110.00,1,1,'2026-03-04 12:46:22'),(5,'Гаспачо','Холодний томатний суп з овочами',95.00,1,1,'2026-03-04 12:46:22'),(6,'Котлета по-київськи','Ніжна котлета з вершковим маслом та зеленню',145.00,2,1,'2026-03-04 12:46:22'),(7,'Стейк із свинини','Свинячий стейк на грилі з гарніром',185.00,2,1,'2026-03-04 12:46:22'),(8,'Запечений лосось','Філе лосося у лимонному соусі з овочами',220.00,2,1,'2026-03-04 12:46:22'),(9,'Голубці','Фаршировані капустяні рулети у томатному соусі',120.00,2,1,'2026-03-04 12:46:22'),(10,'Вареники','Вареники з картоплею та шкварками',95.00,2,1,'2026-03-04 12:46:22'),(11,'Цезар','Класичний салат Цезар з куркою та сухариками',115.00,3,1,'2026-03-04 12:46:22'),(12,'Грецький','Свіжі овочі з фетою та маслинами',105.00,3,1,'2026-03-04 12:46:22'),(13,'Олів\'є','Традиційний святковий салат',90.00,3,1,'2026-03-04 12:46:22'),(14,'Тепла говядина','Теплий салат із яловичиною та руколою',135.00,3,1,'2026-03-04 12:46:22'),(15,'Капрезе','Томати, моцарела, базилік, оливкова олія',120.00,3,1,'2026-03-04 12:46:22'),(16,'Тирамісу','Класичний італійський десерт',95.00,4,1,'2026-03-04 12:46:22'),(17,'Наполеон','Торт Наполеон з заварним кремом',80.00,4,1,'2026-03-04 12:46:22'),(18,'Чізкейк','Ніжний чізкейк з ягідним соусом',105.00,4,1,'2026-03-04 12:46:22'),(19,'Панакота','Ванільна панакота з карамельним соусом',90.00,4,1,'2026-03-04 12:46:22'),(20,'Морозиво','Три кульки морозива на вибір',65.00,4,1,'2026-03-04 12:46:22'),(21,'Свіжовичавлений апельсиновий сік','Апельсиновий фреш',75.00,5,1,'2026-03-04 12:46:22'),(22,'Лимонад домашній','Домашній лимонад з м\'ятою та лаймом',55.00,5,1,'2026-03-04 12:46:22'),(23,'Чай зелений','Зелений чай з жасмином',45.00,5,1,'2026-03-04 12:46:22'),(24,'Кава еспресо','Міцна кава подвійний еспресо',50.00,5,1,'2026-03-04 12:46:22'),(25,'Лате','Класичний лате з молоком',70.00,5,1,'2026-03-04 12:46:22'),(26,'Маргарита','Класична піца з томатним соусом та моцарелою',165.00,6,1,'2026-03-04 12:46:22'),(27,'Пепероні','Піца з пеперомі та гострим соусом',185.00,6,1,'2026-03-04 12:46:22'),(28,'4 сири','Піца з чотирма видами сиру',195.00,6,1,'2026-03-04 12:46:22'),(29,'Карбонара','Паста карбонара з беконом та яйцем',155.00,7,1,'2026-03-04 12:46:22'),(30,'Болоньєзе','Паста болоньєзе з м\'ясним рагу',150.00,7,1,'2026-03-04 12:46:22'),(31,'Брускети з томатами','Хрумкі тости з томатами та базиліком',70.00,8,1,'2026-03-04 12:46:22'),(32,'М\'ясне асорті','Нарізка м\'ясних делікатесів',175.00,8,1,'2026-03-04 12:46:22'),(33,'Сирна тарілка','Асорті твердих сирів з медом та горіхами',195.00,8,1,'2026-03-04 12:46:22');
+/*!40000 ALTER TABLE `menu_items` ENABLE KEYS */;
+
+--
+-- Table structure for table `order_items`
+--
+
+DROP TABLE IF EXISTS `order_items`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `order_items` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `order_id` int NOT NULL,
+  `menu_item_id` int NOT NULL,
+  `quantity` int NOT NULL DEFAULT '1',
+  `unit_price` decimal(10,2) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_order_items_order` (`order_id`),
+  KEY `idx_order_items_menu_item` (`menu_item_id`),
+  CONSTRAINT `fk_oi_menu_item` FOREIGN KEY (`menu_item_id`) REFERENCES `menu_items` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `fk_oi_order` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `chk_oi_price_positive` CHECK ((`unit_price` > 0)),
+  CONSTRAINT `chk_oi_qty_positive` CHECK ((`quantity` > 0))
+) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `order_items`
+--
+
+/*!40000 ALTER TABLE `order_items` DISABLE KEYS */;
+INSERT INTO `order_items` VALUES (1,1,1,2,85.00),(2,1,6,1,145.00),(3,1,11,1,115.00),(4,2,7,2,185.00),(5,2,14,1,135.00),(6,2,24,2,50.00),(7,2,16,1,95.00),(8,3,26,2,165.00),(9,3,23,2,45.00),(10,3,18,1,105.00),(11,4,29,1,155.00),(12,4,12,1,105.00),(13,4,21,1,75.00),(14,4,17,1,80.00),(15,5,1,2,85.00),(16,5,10,2,95.00),(17,5,22,1,55.00),(18,5,20,1,65.00),(19,6,2,2,70.00),(20,6,13,1,90.00),(21,6,23,1,45.00),(22,7,26,1,165.00),(23,7,11,1,115.00),(24,8,8,2,220.00),(25,8,15,1,120.00),(26,8,25,2,70.00),(27,8,18,1,105.00),(28,9,17,1,80.00),(29,9,24,2,50.00),(30,10,7,2,185.00),(31,10,14,1,135.00),(32,10,32,1,175.00),(33,11,1,1,85.00),(34,11,23,1,45.00),(35,11,20,1,65.00),(36,12,27,1,185.00),(37,12,12,1,105.00),(38,12,25,2,70.00),(39,12,16,1,95.00),(40,13,6,2,145.00),(41,13,11,1,115.00),(42,13,25,2,70.00),(43,14,29,1,155.00),(44,14,11,1,115.00),(45,15,1,3,85.00),(46,15,10,2,95.00),(52,13,3,2,90.00),(53,20,19,2,90.00),(54,20,17,2,80.00),(55,20,22,2,55.00),(56,21,22,2,55.00),(57,21,20,2,65.00),(58,22,16,9,95.00);
+/*!40000 ALTER TABLE `order_items` ENABLE KEYS */;
+
+--
+-- Table structure for table `orders`
+--
+
+DROP TABLE IF EXISTS `orders`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `orders` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `restaurant_id` int NOT NULL,
+  `table_id` int DEFAULT NULL,
+  `customer_id` int DEFAULT NULL,
+  `employee_id` int DEFAULT NULL,
+  `status` enum('PENDING','PREPARING','READY','SERVED','PAID','CANCELLED') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'PENDING',
+  `total_amount` decimal(10,2) NOT NULL DEFAULT '0.00',
+  `notes` text COLLATE utf8mb4_unicode_ci,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `completed_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_orders_table` (`table_id`),
+  KEY `idx_orders_restaurant` (`restaurant_id`),
+  KEY `idx_orders_status` (`status`),
+  KEY `idx_orders_created_at` (`created_at`),
+  KEY `idx_orders_completed_at` (`completed_at`),
+  KEY `idx_orders_customer` (`customer_id`),
+  KEY `idx_orders_employee` (`employee_id`),
+  CONSTRAINT `fk_orders_customer` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `fk_orders_employee` FOREIGN KEY (`employee_id`) REFERENCES `employees` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `fk_orders_restaurant` FOREIGN KEY (`restaurant_id`) REFERENCES `restaurants` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `fk_orders_table` FOREIGN KEY (`table_id`) REFERENCES `tables` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `chk_total_non_negative` CHECK ((`total_amount` >= 0))
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `orders`
+--
+
+/*!40000 ALTER TABLE `orders` DISABLE KEYS */;
+INSERT INTO `orders` VALUES (1,1,3,1,4,'PAID',415.00,NULL,'2026-01-10 11:15:00','2026-01-10 12:30:00'),(2,1,5,3,5,'PAID',670.00,NULL,'2026-01-10 17:00:00','2026-01-10 18:45:00'),(3,2,7,2,9,'PAID',540.00,NULL,'2026-01-11 10:30:00','2026-01-11 11:50:00'),(4,2,8,5,9,'PAID',380.00,NULL,'2026-01-11 16:00:00','2026-01-11 17:15:00'),(5,3,13,6,14,'PAID',475.00,NULL,'2026-01-12 12:00:00','2026-01-12 13:20:00'),(6,3,15,8,15,'PAID',320.00,NULL,'2026-01-12 17:30:00','2026-01-12 18:40:00'),(7,1,4,1,4,'PAID',295.00,NULL,'2026-02-05 10:00:00','2026-02-05 11:10:00'),(8,2,9,3,9,'PAID',860.00,NULL,'2026-02-05 18:00:00','2026-02-05 19:30:00'),(9,4,19,4,19,'PAID',180.00,NULL,'2026-02-10 08:30:00','2026-02-10 09:00:00'),(10,5,24,7,23,'PAID',620.00,NULL,'2026-02-14 17:00:00','2026-02-14 18:45:00'),(11,1,1,8,4,'PAID',175.00,NULL,'2026-02-20 09:00:00','2026-02-20 09:40:00'),(12,6,31,9,28,'PAID',445.00,NULL,'2026-02-22 12:30:00','2026-02-22 13:45:00'),(13,1,6,10,5,'PAID',725.00,NULL,'2026-03-04 10:00:00',NULL),(14,2,7,2,9,'PAID',310.00,NULL,'2026-03-04 11:00:00',NULL),(15,3,14,6,14,'PAID',445.00,NULL,'2026-03-04 11:30:00','2026-03-04 13:05:01'),(20,7,32,11,30,'PAID',450.00,NULL,'2026-03-05 09:17:34',NULL),(21,7,40,14,30,'PREPARING',240.00,NULL,'2026-03-05 11:37:36',NULL),(22,7,44,13,30,'SERVED',855.00,NULL,'2026-03-05 11:38:32',NULL);
+/*!40000 ALTER TABLE `orders` ENABLE KEYS */;
+
+--
+-- Table structure for table `positions`
+--
+
+DROP TABLE IF EXISTS `positions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `positions` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `title` varchar(80) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `title` (`title`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `positions`
+--
+
+/*!40000 ALTER TABLE `positions` DISABLE KEYS */;
+INSERT INTO `positions` VALUES (5,'Адміністратор'),(7,'Бармен'),(6,'Касир'),(1,'Керуючий рестораном'),(3,'Кухар'),(4,'Офіціант'),(8,'Прибиральник'),(2,'Шеф-кухар');
+/*!40000 ALTER TABLE `positions` ENABLE KEYS */;
+
+--
+-- Table structure for table `reservations`
+--
+
+DROP TABLE IF EXISTS `reservations`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `reservations` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `restaurant_id` int NOT NULL,
+  `table_id` int NOT NULL,
+  `customer_id` int DEFAULT NULL,
+  `reservation_time` datetime NOT NULL,
+  `end_time` datetime NOT NULL,
+  `party_size` int NOT NULL DEFAULT '1',
+  `status` enum('CONFIRMED','CANCELLED','COMPLETED','NO_SHOW') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'CONFIRMED',
+  `notes` text COLLATE utf8mb4_unicode_ci,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `fk_res_restaurant` (`restaurant_id`),
+  KEY `idx_reservations_time` (`reservation_time`,`end_time`),
+  KEY `idx_reservations_table` (`table_id`),
+  KEY `idx_reservations_status` (`status`),
+  KEY `idx_reservations_customer` (`customer_id`),
+  CONSTRAINT `fk_res_customer` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `fk_res_restaurant` FOREIGN KEY (`restaurant_id`) REFERENCES `restaurants` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_res_table` FOREIGN KEY (`table_id`) REFERENCES `tables` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `chk_party_size` CHECK ((`party_size` > 0)),
+  CONSTRAINT `chk_res_end_after_start` CHECK ((`end_time` > `reservation_time`))
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `reservations`
+--
+
+/*!40000 ALTER TABLE `reservations` DISABLE KEYS */;
+INSERT INTO `reservations` VALUES (1,1,3,1,'2026-03-04 18:00:00','2026-03-04 20:00:00',3,'CONFIRMED','День народження','2026-03-04 12:46:22'),(2,1,5,3,'2026-03-05 19:30:00','2026-03-05 22:00:00',5,'CONFIRMED','Корпоратив','2026-03-04 12:46:22'),(3,2,7,2,'2026-03-04 19:00:00','2026-03-04 21:00:00',2,'CONFIRMED',NULL,'2026-03-04 12:46:22'),(4,2,9,5,'2026-03-06 12:00:00','2026-03-06 14:00:00',4,'CONFIRMED','Ділова зустріч','2026-03-04 12:46:22'),(5,3,14,6,'2026-03-07 18:00:00','2026-03-07 20:30:00',4,'CANCELLED',NULL,'2026-03-04 12:46:22'),(6,3,15,8,'2026-03-08 14:00:00','2026-03-08 15:30:00',6,'CONFIRMED',NULL,'2026-03-04 12:46:22'),(7,4,21,4,'2026-03-05 10:00:00','2026-03-05 11:30:00',2,'CONFIRMED',NULL,'2026-03-04 12:46:22'),(8,5,24,7,'2026-03-04 20:00:00','2026-03-04 22:30:00',4,'CONFIRMED','Річниця','2026-03-04 12:46:22'),(9,6,31,9,'2026-03-07 19:00:00','2026-03-07 21:00:00',3,'CONFIRMED',NULL,'2026-03-04 12:46:22'),(10,1,4,10,'2026-02-28 13:00:00','2026-02-28 14:30:00',2,'COMPLETED',NULL,'2026-03-04 12:46:22'),(11,2,8,1,'2026-02-27 20:00:00','2026-02-27 22:00:00',4,'COMPLETED',NULL,'2026-03-04 12:46:22'),(12,1,6,5,'2026-03-10 19:00:00','2026-03-10 21:00:00',7,'CANCELLED','Скасовано замовником','2026-03-04 12:46:22'),(13,7,33,7,'2026-11-11 09:00:00','2026-11-11 10:00:00',3,'COMPLETED',NULL,'2026-03-05 11:31:06'),(14,7,41,11,'2026-04-02 10:00:00','2026-04-02 12:00:00',3,'CONFIRMED',NULL,'2026-03-05 12:05:20');
+/*!40000 ALTER TABLE `reservations` ENABLE KEYS */;
+
+--
+-- Table structure for table `restaurants`
+--
+
+DROP TABLE IF EXISTS `restaurants`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `restaurants` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `address` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `phone` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `opening_time` time NOT NULL DEFAULT '08:00:00',
+  `closing_time` time NOT NULL DEFAULT '22:00:00',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `chk_working_hours` CHECK ((`closing_time` > `opening_time`))
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `restaurants`
+--
+
+/*!40000 ALTER TABLE `restaurants` DISABLE KEYS */;
+INSERT INTO `restaurants` VALUES (1,'Дуже Смачна Хата','вул. Хрещатик, 11, Київ','+380441234568','info@smachna.md','09:05:00','23:00:00','2026-03-04 12:46:22'),(2,'Borsch & Wine','вул. Сагайдачного, 5, Київ','+380442345678','bw@borsch.ua','11:00:00','23:59:00','2026-03-04 12:46:22'),(3,'Пузата Хата','просп. Перемоги, 32, Київ','+380443456789','puzata@hata.ua','08:00:00','22:00:00','2026-03-04 12:46:22'),(4,'Lviv Croissants','вул. Вітовського, 45, Львів','+380322567890','lviv@croissants.ua','07:00:00','21:00:00','2026-03-04 12:46:22'),(5,'Одеський Дворик','вул. Дерибасівська, 12, Одеса','+380482678901','odessa@dvorik.ua','10:00:00','23:30:00','2026-03-04 12:46:22'),(6,'Green Garden','вул. Ломоносова, 73, Харків','+380572789012','green@garden.ua','09:00:00','22:00:00','2026-03-04 12:46:22'),(7,'Євразія','проспект Берестейський','+380934444444','evrasiya@gmail.com','08:00:00','22:00:00','2026-03-04 12:50:26');
+/*!40000 ALTER TABLE `restaurants` ENABLE KEYS */;
+
+--
+-- Table structure for table `tables`
+--
+
+DROP TABLE IF EXISTS `tables`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `tables` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `restaurant_id` int NOT NULL,
+  `table_number` int NOT NULL,
+  `capacity` int NOT NULL,
+  `is_occupied` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uq_table_in_restaurant` (`restaurant_id`,`table_number`),
+  KEY `idx_tables_restaurant` (`restaurant_id`),
+  CONSTRAINT `fk_tables_restaurant` FOREIGN KEY (`restaurant_id`) REFERENCES `restaurants` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `chk_capacity_positive` CHECK ((`capacity` > 0))
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tables`
+--
+
+/*!40000 ALTER TABLE `tables` DISABLE KEYS */;
+INSERT INTO `tables` VALUES (1,1,1,2,0),(2,1,2,2,0),(3,1,3,4,0),(4,1,4,4,0),(5,1,5,6,0),(6,1,6,8,0),(7,2,1,2,0),(8,2,2,4,0),(9,2,3,4,0),(10,2,4,6,0),(11,2,5,8,0),(12,3,1,4,0),(13,3,2,4,0),(14,3,3,4,0),(15,3,4,6,0),(16,3,5,6,0),(17,3,6,10,0),(18,4,1,2,0),(19,4,2,2,0),(20,4,3,4,0),(21,4,4,6,0),(22,5,1,2,0),(23,5,2,4,0),(24,5,3,4,0),(25,5,4,6,0),(26,5,5,8,0),(27,6,1,2,0),(28,6,2,4,0),(29,6,3,4,0),(30,6,4,4,0),(31,6,5,6,0),(32,7,1,2,1),(33,7,2,3,0),(36,7,3,2,0),(37,7,4,6,0),(38,7,5,3,0),(39,7,6,3,0),(40,7,7,4,1),(41,7,8,4,0),(42,7,9,6,0),(43,7,10,6,0),(44,7,11,2,1);
+/*!40000 ALTER TABLE `tables` ENABLE KEYS */;
+
+--
+-- Dumping routines for database 'restaurant_network'
+--
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2026-03-05 14:37:11

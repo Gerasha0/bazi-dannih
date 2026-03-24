@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox spacing="0" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.restaurant.ui.ReportsController">
+
+    <TabPane tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+
+        <!-- ====== Звіт про продажі ====== -->
+        <Tab text="Продажі за період">
+            <VBox spacing="0">
+                <HBox styleClass="filter-bar" spacing="10" alignment="CENTER_LEFT">
+                    <Label text="Від (рррр-мм-дд)" styleClass="field-label"/>
+                    <TextField fx:id="fldFrom" prefWidth="130" promptText="2026-01-01"/>
+                    <Label text="До" styleClass="field-label"/>
+                    <TextField fx:id="fldTo"   prefWidth="130" promptText="2026-12-31"/>
+                    <Button text="▶ Сформувати" styleClass="btn-primary" onAction="#handleSalesReport"/>
+                </HBox>
+
+                <TableView fx:id="salesTable" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="srRestaurant" text="Заклад"      prefWidth="180"/>
+                        <TableColumn fx:id="srDate"       text="Дата"        prefWidth="110"/>
+                        <TableColumn fx:id="srOrders"     text="Замовлень"   prefWidth="100"/>
+                        <TableColumn fx:id="srItems"      text="Позицій"     prefWidth="90"/>
+                        <TableColumn fx:id="srRevenue"    text="Виторг, ₴"   prefWidth="120"/>
+                    </columns>
+                </TableView>
+
+                <HBox styleClass="action-bar" spacing="12" alignment="CENTER_LEFT">
+                    <Label text="Загальний виторг за період:" styleClass="field-label"/>
+                    <Label fx:id="lblTotalRevenue"
+                           style="-fx-font-weight:bold; -fx-font-size:15; -fx-text-fill:#e8721a;"/>
+                </HBox>
+            </VBox>
+        </Tab>
+
+        <!-- ====== Топ страв ====== -->
+        <Tab text="Топ-10 страв">
+            <VBox spacing="0">
+                <HBox styleClass="filter-bar" spacing="10" alignment="CENTER_LEFT">
+                    <Label text="Позицій у топ" styleClass="field-label"/>
+                    <TextField fx:id="fldTopN" prefWidth="60" text="10"/>
+                    <Button text="▶ Показати" styleClass="btn-primary" onAction="#handleTopDishes"/>
+                </HBox>
+
+                <TableView fx:id="topDishesTable" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="tdRank"     text="#"         prefWidth="40"/>
+                        <TableColumn fx:id="tdName"     text="Страва"    prefWidth="200"/>
+                        <TableColumn fx:id="tdCategory" text="Категорія" prefWidth="130"/>
+                        <TableColumn fx:id="tdPrice"    text="Ціна, ₴"   prefWidth="100"/>
+                        <TableColumn fx:id="tdOrdered"  text="Замовлено" prefWidth="100"/>
+                        <TableColumn fx:id="tdRevenue"  text="Виторг, ₴" prefWidth="120"/>
+                    </columns>
+                </TableView>
+            </VBox>
+        </Tab>
+
+        <!-- ====== Зайнятість столиків ====== -->
+        <Tab text="Зайнятість столиків">
+            <VBox spacing="0">
+                <HBox styleClass="filter-bar" spacing="10" alignment="CENTER_LEFT">
+                    <Label text="Заклад" styleClass="field-label"/>
+                    <ComboBox fx:id="cbFreeTabRestaurant" prefWidth="190"/>
+                    <Button text="📍 Зараз" styleClass="btn-success" onAction="#handleTablesNow"/>
+                    <Separator orientation="VERTICAL" style="-fx-padding:0 4 0 4;"/>
+                    <Label text="Від" styleClass="field-label"/>
+                    <TextField fx:id="fldFreeFrom" prefWidth="140" promptText="2026-03-04 18:00"/>
+                    <Label text="До" styleClass="field-label"/>
+                    <TextField fx:id="fldFreeTo"   prefWidth="140" promptText="2026-03-04 20:00"/>
+                    <Button text="📅 За інтервалом" styleClass="btn-primary" onAction="#handleFindFreeTables"/>
+                </HBox>
+                <TableView fx:id="freeTablesTable" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="ftNum"    text="Стіл №"  prefWidth="80"/>
+                        <TableColumn fx:id="ftCap"    text="Місць"   prefWidth="80"/>
+                        <TableColumn fx:id="ftRest"   text="Заклад"  prefWidth="200"/>
+                        <TableColumn fx:id="ftStatus" text="Статус"  prefWidth="150"/>
+                    </columns>
+                </TableView>
+            </VBox>
+        </Tab>
+    </TabPane>
+
+    <Label fx:id="reportErrorLabel" styleClass="error-label"/>
+</VBox>

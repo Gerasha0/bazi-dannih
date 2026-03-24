@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<SplitPane dividerPositions="0.62" xmlns:fx="http://javafx.com/fxml"
+           fx:controller="com.restaurant.ui.EmployeesController">
+
+    <VBox spacing="0">
+        <HBox styleClass="filter-bar" spacing="8" alignment="CENTER_LEFT">
+            <Label text="Заклад" styleClass="field-label"/>
+            <ComboBox fx:id="cbRestaurant" promptText="Всі" prefWidth="160" onAction="#handleFilter"/>
+            <TextField fx:id="searchField" promptText="Прізвище або ім'я…" prefWidth="170"
+                       onAction="#handleSearch" HBox.hgrow="ALWAYS"/>
+            <Button text="🔍" styleClass="btn-primary" onAction="#handleSearch"/>
+            <Button text="↺" styleClass="btn-refresh" onAction="#handleRefresh"/>
+        </HBox>
+        <TableView fx:id="tableView" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="colId"         text="ID"       prefWidth="45"/>
+                <TableColumn fx:id="colLastName"   text="Прізвище" prefWidth="120"/>
+                <TableColumn fx:id="colFirstName"  text="Ім'я"     prefWidth="100"/>
+                <TableColumn fx:id="colPosition"   text="Посада"   prefWidth="140"/>
+                <TableColumn fx:id="colRestaurant" text="Заклад"   prefWidth="140"/>
+                <TableColumn fx:id="colSalary"     text="Зарплата" prefWidth="90"/>
+                <TableColumn fx:id="colActive"     text="Активний" prefWidth="70"/>
+            </columns>
+        </TableView>
+        <HBox styleClass="action-bar" spacing="8">
+            <Button text="➕ Додати"       styleClass="btn-success" onAction="#handleAdd"/>
+            <Button text="🔒 Деактивувати" styleClass="btn-warning" onAction="#handleDeactivate"/>
+            <Button text="🗑 Видалити"     styleClass="btn-danger"  onAction="#handleDelete"/>
+        </HBox>
+    </VBox>
+
+    <ScrollPane fitToWidth="true" styleClass="scroll-pane">
+        <VBox spacing="10" styleClass="form-panel">
+            <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+
+            <Label text="Дані співробітника" styleClass="section-title"/>
+
+            <HBox spacing="12">
+                <VBox HBox.hgrow="ALWAYS" spacing="4">
+                    <Label text="Ім'я *" styleClass="field-label"/>
+                    <TextField fx:id="fldFirstName" promptText="Ім'я"/>
+                </VBox>
+                <VBox HBox.hgrow="ALWAYS" spacing="4">
+                    <Label text="Прізвище *" styleClass="field-label"/>
+                    <TextField fx:id="fldLastName" promptText="Прізвище"/>
+                </VBox>
+            </HBox>
+
+            <Label text="Посада *" styleClass="field-label"/>
+            <ComboBox fx:id="fldPosition" prefWidth="200"/>
+
+            <Label text="Заклад *" styleClass="field-label"/>
+            <ComboBox fx:id="fldRestaurant" prefWidth="230"/>
+
+            <HBox spacing="12">
+                <VBox HBox.hgrow="ALWAYS" spacing="4">
+                    <Label text="Телефон" styleClass="field-label"/>
+                    <TextField fx:id="fldPhone"/>
+                </VBox>
+                <VBox HBox.hgrow="ALWAYS" spacing="4">
+                    <Label text="Email" styleClass="field-label"/>
+                    <TextField fx:id="fldEmail"/>
+                </VBox>
+            </HBox>
+
+            <HBox spacing="12">
+                <VBox HBox.hgrow="ALWAYS" spacing="4">
+                    <Label text="Дата прийому (рррр-мм-дд) *" styleClass="field-label"/>
+                    <TextField fx:id="fldHireDate" promptText="2024-01-15"/>
+                </VBox>
+                <VBox HBox.hgrow="ALWAYS" spacing="4">
+                    <Label text="Зарплата *" styleClass="field-label"/>
+                    <TextField fx:id="fldSalary" promptText="25000"/>
+                </VBox>
+            </HBox>
+            <CheckBox fx:id="chkActive" text="Активний" selected="true"/>
+
+            <HBox spacing="10">
+                <Button text="💾 Зберегти"  styleClass="btn-primary"   onAction="#handleSave"   prefWidth="120"/>
+                <Button text="✖ Скасувати" styleClass="btn-secondary" onAction="#handleCancel" prefWidth="100"/>
+            </HBox>
+            <Label fx:id="errorLabel" styleClass="error-label"/>
+        </VBox>
+    </ScrollPane>
+</SplitPane>

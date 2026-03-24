@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox spacing="0" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.restaurant.ui.OrdersController">
+
+    <!-- Фільтри + дії -->
+    <HBox styleClass="filter-bar" spacing="8" alignment="CENTER_LEFT">
+        <Label text="Заклад" styleClass="field-label"/>
+        <ComboBox fx:id="cbRestaurant" prefWidth="180" onAction="#handleFilter"/>
+        <Label text="Статус" styleClass="field-label"/>
+        <ComboBox fx:id="cbStatus" prefWidth="130" onAction="#handleFilter"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="↺ Оновити"         styleClass="btn-refresh" onAction="#handleRefresh"/>
+        <Button text="➕ Нове замовлення" styleClass="btn-success" onAction="#handleNewOrder"/>
+        <Button text="✏ Призначити"      styleClass="btn-purple"  onAction="#handleEditAssignment"/>        <Button text="🪺 Звільнити стіл"  styleClass="btn-warning" onAction="#handleFreeTable"/>        <Button text="🗑 Видалити"        styleClass="btn-danger"  onAction="#handleDeleteOrder"/>
+    </HBox>
+
+    <!-- Головна таблиця замовлень -->
+    <SplitPane VBox.vgrow="ALWAYS" dividerPositions="0.52">
+        <TableView fx:id="ordersTable">
+            <columns>
+                <TableColumn fx:id="colId"        text="#"         prefWidth="50"/>
+                <TableColumn fx:id="colRestaurant" text="Заклад"   prefWidth="130"/>
+                <TableColumn fx:id="colTable"      text="Стіл"     prefWidth="65"/>
+                <TableColumn fx:id="colEmployee"   text="Офіціант" prefWidth="120"/>
+                <TableColumn fx:id="colCustomer"   text="Клієнт"   prefWidth="120"/>
+                <TableColumn fx:id="colStatus"     text="Статус"   prefWidth="100"/>
+                <TableColumn fx:id="colTotal"      text="Сума, ₴"  prefWidth="90"/>
+                <TableColumn fx:id="colCreatedAt"  text="Час"      prefWidth="130"/>
+            </columns>
+        </TableView>
+
+        <!-- Деталі вибраного замовлення -->
+        <VBox spacing="8" styleClass="form-panel">
+            <padding><Insets top="14" right="14" bottom="14" left="14"/></padding>
+            <Label text="Склад замовлення" styleClass="section-title"/>
+            <TableView fx:id="itemsTable" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="iColName"  text="Страва" prefWidth="180"/>
+                    <TableColumn fx:id="iColQty"   text="Кіл."   prefWidth="50"/>
+                    <TableColumn fx:id="iColPrice" text="Ціна"   prefWidth="80"/>
+                    <TableColumn fx:id="iColTotal" text="Сума"   prefWidth="80"/>
+                </columns>
+            </TableView>
+
+            <!-- Панель зміни статусу -->
+            <HBox spacing="8" alignment="CENTER_LEFT">
+                <Label text="Статус" styleClass="field-label"/>
+                <ComboBox fx:id="cbNewStatus" prefWidth="140"/>
+                <Button text="✔ Застосувати" styleClass="btn-purple" onAction="#handleChangeStatus"/>
+                <Button text="💳 Оплатити"   styleClass="btn-teal"   onAction="#handlePay"/>
+            </HBox>
+
+            <!-- Додати страву до замовлення -->
+            <HBox spacing="8" alignment="CENTER_LEFT">
+                <ComboBox fx:id="cbDish"  prefWidth="200" promptText="Оберіть страву"/>
+                <TextField fx:id="fldQty" prefWidth="55"  promptText="К-сть"/>
+                <Button text="➕ Додати"    styleClass="btn-success" onAction="#handleAddItem"/>
+                <Button text="🗑 Видалити" styleClass="btn-danger"  onAction="#handleRemoveItem"/>
+            </HBox>
+            <Label fx:id="orderErrorLabel" styleClass="error-label"/>
+        </VBox>
+    </SplitPane>
+</VBox>

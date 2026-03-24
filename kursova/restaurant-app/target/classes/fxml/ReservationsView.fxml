@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox spacing="0" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.restaurant.ui.ReservationsController">
+
+    <!-- Фільтри + дії -->
+    <HBox styleClass="filter-bar" spacing="8" alignment="CENTER_LEFT">
+        <Label text="Заклад" styleClass="field-label"/>
+        <ComboBox fx:id="cbRestaurant" prefWidth="180" onAction="#handleFilter"/>
+        <Label text="Статус" styleClass="field-label"/>
+        <ComboBox fx:id="cbStatus" prefWidth="140" onAction="#handleFilter"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="↺ Оновити"          styleClass="btn-refresh"  onAction="#handleRefresh"/>
+        <Button text="➕ Нове бронювання" styleClass="btn-success"  onAction="#handleNew"/>
+        <Button text="✔ Завершити"        styleClass="btn-teal"     onAction="#handleComplete"/>
+        <Button text="✗ Скасувати"        styleClass="btn-warning"  onAction="#handleCancel"/>
+        <Button text="🗑 Видалити"        styleClass="btn-danger"   onAction="#handleDelete"/>
+    </HBox>
+
+    <!-- Таблиця бронювань -->
+    <TableView fx:id="reservationsTable" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="colId"         text="#"           prefWidth="50"/>
+            <TableColumn fx:id="colRestaurant" text="Заклад"      prefWidth="130"/>
+            <TableColumn fx:id="colTable"      text="Стіл"        prefWidth="80"/>
+            <TableColumn fx:id="colCustomer"   text="Клієнт"      prefWidth="145"/>
+            <TableColumn fx:id="colFrom"       text="Від"         prefWidth="135"/>
+            <TableColumn fx:id="colTo"         text="До"          prefWidth="135"/>
+            <TableColumn fx:id="colParty"      text="Гостей"      prefWidth="68"/>
+            <TableColumn fx:id="colStatus"     text="Статус"      prefWidth="115"/>
+            <TableColumn fx:id="colNotes"      text="Нотатки"     prefWidth="220"/>
+        </columns>
+    </TableView>
+</VBox>
